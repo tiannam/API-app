@@ -32,21 +32,21 @@ public class PhotoCalls {
         client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&text=disneyland", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                String disneyland = null;
+                String thing = null;
 
                 try {
                     JSONArray results = response.getJSONArray("results");
-                    JSONObject place = (JSONObject) results.get(0);
-                    disneyland = place.getString("Disneyland");
+                    JSONObject picture = (JSONObject) results.get(0);
+                    thing = picture.getString("Disneyland");
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
 
-                responseHandler.handleResponse(disneyland);
+                responseHandler.handleResponse(thing);
             }
+
         });
     }
-
 
     public interface ApiResponseHandler{
         void handleResponse(String response);
