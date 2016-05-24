@@ -11,12 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements PhotoCalls.ApiResponseHandler {
 
     ImageView imageView;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,10 @@ public class MainActivity extends AppCompatActivity implements PhotoCalls.ApiRes
         setSupportActionBar(toolbar);
 
         imageView = (ImageView)findViewById(R.id.imageView);
+        textView = (TextView)findViewById(R.id.textView);
 
-        Picasso.with(this)
-            .load("https://farm8.staticflickr.com/7579/26532552054_e3ef6c744d.jpg")
-            .into(imageView);
+        handleResponse("random");
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements PhotoCalls.ApiRes
 
     @Override
     public void handleResponse(String response) {
+        Picasso.with(this)
+                .load(response)
+                .into(imageView);
 
     }
 }
