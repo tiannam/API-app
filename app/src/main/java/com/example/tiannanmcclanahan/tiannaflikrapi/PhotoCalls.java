@@ -30,26 +30,23 @@ public class PhotoCalls {
     //get photos
     public  void doRequest() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&text=" + response, null, new JsonHttpResponseHandler() {
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&extras=url_m&text=Disneyland&nojsoncallback=1" + response, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                String thing = null;
+                String address = null;
 
                 try {
-                    JSONArray results = response.getJSONArray("results");
-                    JSONObject picture = (JSONObject) results.get(0);
-                    thing = picture.getString("");
-                    int farmId = 8;
-                    String serverId = "7249";
-                    String id = "27167471056";
-                    String secret = "cefc7f69d8";
-                    String url = "https://farm" + farmId + ".staticflickr.com/" + serverId + "/" + id + secret + ".jpg";
+                    JSONObject jsonObject = response.getJSONObject("photos");
+                    JSONArray photo = jsonObject.getJSONArray("photo");
+                    JSONObject photos = photo.getJSONObject(0);
+                    address = photos.getString("url_m");
+
 
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
 
-                responseHandler.handleResponse(thing);
+                responseHandler.handleResponse(address);
             }
 
         });
