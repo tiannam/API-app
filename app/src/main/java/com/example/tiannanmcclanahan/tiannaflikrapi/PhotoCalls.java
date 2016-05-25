@@ -30,7 +30,7 @@ public class PhotoCalls {
     //get photos
     public  void doRequest() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&extras=url_m&text=Disneyland&nojsoncallback=1" + response, null, new JsonHttpResponseHandler() {
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&extras=url_m&nojsoncallback=1&text=Disneyland" + response, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
                 String address = null;
@@ -55,6 +55,30 @@ public class PhotoCalls {
 
     public interface ApiResponseHandler{
         void handleResponse(String response);
+
+    }
+    public  void searchRequest(String searchQuery) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=10f37feff9a19338e1dcbe6499cf45bc&format=json&extras=url_m&nojsoncallback=1&text=" + searchQuery, null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                String address = null;
+
+                try {
+                    JSONObject jsonObject = response.getJSONObject("photos");
+                    JSONArray photo = jsonObject.getJSONArray("photo");
+                    JSONObject photos = photo.getJSONObject(0);
+                    address = photos.getString("url_m");
+
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                responseHandler.handleResponse(address);
+            }
+
+        });
 
     }
 }
